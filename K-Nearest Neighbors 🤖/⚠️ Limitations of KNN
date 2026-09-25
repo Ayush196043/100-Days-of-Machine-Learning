@@ -1,0 +1,183 @@
+# ⚠️ Limitations of KNN
+
+Although **K-Nearest Neighbors (KNN)** is simple and easy to understand, it has some important limitations.
+
+### 1. 🐌 Slow Prediction on Large Datasets
+
+KNN does not build a complex model during training. Instead, for a new data point, it calculates distances from training data to find the nearest neighbors.
+
+If the dataset becomes very large, prediction can become computationally expensive.
+
+```text
+Small Dataset
+     ↓
+Distance Calculation
+     ↓
+Fast Prediction
+
+Large Dataset
+     ↓
+Many Distance Calculations
+     ↓
+Slower Prediction
+```
+
+---
+
+### 2. 📏 Sensitive to Feature Scaling
+
+KNN is a **distance-based algorithm**.
+
+If features have very different ranges, a feature with larger values can dominate the distance calculation.
+
+For example:
+
+```text
+Age      → 20 - 60
+Salary   → 20,000 - 100,000
+```
+
+Salary can have a much larger numerical effect on distance.
+
+Therefore, feature scaling such as:
+
+```python
+StandardScaler()
+```
+
+is commonly used before applying KNN.
+
+---
+
+### 3. 🎯 Choosing the Right K is Important
+
+The value of `K` directly affects the model.
+
+#### Very Small K
+
+For example:
+
+```text
+K = 1
+```
+
+The model can become highly sensitive to individual training points and noise.
+
+#### Very Large K
+
+A large K considers many neighbors and can make the decision boundary too smooth.
+
+Therefore, an appropriate value of K should be selected using a **validation set or cross-validation** rather than simply choosing the value that performs best on the test set.
+
+---
+
+### 4. 🔊 Sensitive to Noisy Data
+
+Because KNN makes predictions using nearby data points, noisy or incorrectly labeled observations can affect the prediction.
+
+For example:
+
+```text
+Neighbor 1 → Class A
+Neighbor 2 → Class A
+Neighbor 3 → Wrongly labeled Class B
+```
+
+The incorrect data point can influence the final prediction.
+
+---
+
+### 5. 📊 Sensitive to Irrelevant Features
+
+KNN calculates distance using the available features.
+
+If the dataset contains irrelevant features, they can affect the calculated distance even though they do not help with prediction.
+
+Therefore, **feature selection** can be important for KNN.
+
+---
+
+### 6. 🌀 Performance Can Decrease with High Dimensions
+
+KNN can face difficulties when the number of features becomes very large.
+
+This is related to the **Curse of Dimensionality**.
+
+As the number of dimensions increases:
+
+```text
+Number of Features ↑
+        ↓
+Distance Differences Become Less Meaningful
+        ↓
+Finding Useful Neighbors Becomes Difficult
+```
+
+Dimensionality reduction or feature selection can sometimes help.
+
+---
+
+### 7. 💾 Requires Training Data During Prediction
+
+KNN needs access to the training data when making predictions because it compares a new point with existing training examples.
+
+Therefore, storing and searching through a large training dataset can require significant memory and computation.
+
+---
+
+### 8. 📐 Choice of Distance Metric Matters
+
+Different distance metrics can produce different neighbors.
+
+Common distance metrics include:
+
+* Euclidean Distance
+* Manhattan Distance
+* Minkowski Distance
+* Chebyshev Distance
+* Hamming Distance
+
+The appropriate distance metric depends on the type and nature of the data.
+
+---
+
+### 9. ⚖️ Class Imbalance Can Affect Predictions
+
+If one class has many more observations than another, majority voting can favor the larger class.
+
+For example:
+
+```text
+K = 5
+
+Class A → 4 neighbors
+Class B → 1 neighbor
+```
+
+The model predicts:
+
+```text
+Class A
+```
+
+Even when the minority class may be important.
+
+Techniques such as appropriate sampling, class-aware evaluation, or weighted KNN can be considered depending on the problem.
+
+---
+
+## 📝 Summary of KNN Limitations
+
+| Limitation             | Why it matters                                    |
+| ---------------------- | ------------------------------------------------- |
+| 🐌 Slow prediction     | Distance must be calculated against training data |
+| 📏 Feature scaling     | Different feature ranges can distort distances    |
+| 🎯 K selection         | Wrong K can lead to poor generalization           |
+| 🔊 Noise sensitivity   | Noisy points can influence neighbors              |
+| 📊 Irrelevant features | They can affect distance calculations             |
+| 🌀 High dimensions     | Neighbor relationships can become less meaningful |
+| 💾 Memory requirement  | Training examples are needed during prediction    |
+| 📐 Distance metric     | Different metrics can produce different neighbors |
+| ⚖️ Class imbalance     | Majority voting may favor the larger class        |
+
+> **Key takeaway:** KNN is simple and intuitive, but its performance depends heavily on the quality and scale of the data, the choice of `K`, the distance metric, and the number of features.
